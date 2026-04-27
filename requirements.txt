@@ -3,7 +3,7 @@ click==7.1.2
 h11==0.14.0
 itsdangerous==1.1.0
 MarkupSafe==1.1.1
-numpy==1.21.6
+numpy==1.21.1
 otree==5.11.4
 python-multipart==0.0.5
 six==1.17.0
