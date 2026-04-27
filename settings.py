@@ -31,7 +31,7 @@ ROOMS = [
     dict(
         name='lab',
         display_name='Lab',
-        participant_label_file='_rooms/lab.txt'
+        # participant_label_file='_rooms/lab.txt'
     )
 ]
 
