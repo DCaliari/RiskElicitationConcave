@@ -10,7 +10,7 @@ Chance
 
 class C(BaseConstants):
     NAME_IN_URL = 'chance'
-    PLAYERS_PER_GROUP = 20
+    PLAYERS_PER_GROUP = 1
     NUM_ROUNDS = 30
 
 
