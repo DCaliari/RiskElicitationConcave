@@ -11,7 +11,7 @@ Chance
 class C(BaseConstants):
     NAME_IN_URL = 'chance'
     PLAYERS_PER_GROUP = 20
-    NUM_ROUNDS = 30
+    NUM_ROUNDS = 100
 
 
 class Subsession(BaseSubsession):
