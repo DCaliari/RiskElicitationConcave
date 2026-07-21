@@ -109,7 +109,7 @@ class Player(BasePlayer):
     )
 
     q_final_1 = models.LongStringField(
-        label="Were the experimental instructions and the design clear? If anything was unclear about the instructions/design, please describe it briefly. (max 500 char.)")
+        label="Were the experimental instructions and the design clear? (max 500 char.)")
     q_final_2 = models.LongStringField(label="What do you think is the purpose of the experiment? (max 500 char.)")
     q_final_3 = models.LongStringField(
         label="Can you briefly motivate all or some of your choices in Part 1? (max 500 char.)")
@@ -287,9 +287,12 @@ class Chance(Page):
 
         player.response_time_start = time.time()
 
+        num_rounds_displayed1 = int(CA_length + CB1_length + CB2_length + L_length + D_length)
+
         return dict(
             number_rounds=int(total_length),
             variant=variant,
+            num_rounds_displayed1=num_rounds_displayed1,
         )
 
     @staticmethod
