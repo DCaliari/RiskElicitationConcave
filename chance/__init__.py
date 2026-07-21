@@ -37,13 +37,13 @@ class Player(BasePlayer):
     real_round = models.IntegerField()
 
     Q1 = models.StringField(
-        label="How many rounds are there in Part 1?",
+        label="Q1: How many rounds are there in Part 1?",
         choices=['10', '20', '30'],
         widget=widgets.RadioSelect
     )
     Q2_1 = models.StringField(
         blank=True,
-        label="Which of the following outcomes are possible in each round? (Select all that apply.)",
+        label="Q2: Which of the following outcomes are possible in each round? (Select all that apply.)",
         choices=['0€'],
         widget=widgets.RadioSelect
     )
@@ -63,12 +63,12 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect
     )
     Q3 = models.StringField(
-        label="Do your decisions affect the earnings of other participants?",
+        label="Q3: Do your decisions affect the earnings of other participants?",
         choices=['Yes', 'No'],
         widget=widgets.RadioSelect
     )
     Q4 = models.StringField(
-        label="How is your payment determined?",
+        label="Q4: How is your payment determined?",
         choices=['If Part 1 is selected for payment, you are paid the sum of all rounds',
                  'If Part 1 is selected for payment, one round is randomly selected and paid',
                  'You are paid a fixed amount independent of your choices'],
@@ -90,7 +90,7 @@ class Player(BasePlayer):
     Q7 = models.FloatField(label="Move the slider in the screen below so that the medium probability is between 20% and 30%.")
 
     Q8 = models.StringField(
-        label="How many rounds are there in Part 2?",
+        label="Q1: How many rounds are there in Part 2?",
         choices=['1', '2', '3'],
         widget=widgets.RadioSelect
     )
@@ -102,7 +102,7 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect
     )
     Q10 = models.StringField(
-        label="If in one row you select the option on the right of the list:",
+        label="Q5: If in one row you select the option on the right of the list:",
         choices=['All rows below will automatically select the option on the right.',
                  'You can still choose the option on the left in one the rows below.'],
         widget=widgets.RadioSelect
