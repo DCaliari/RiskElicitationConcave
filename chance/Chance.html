@@ -90,10 +90,12 @@
             </td>
             <td style="text-align:center; vertical-align: bottom;">
                 {% if variant == 'SP' %}
-                    <canvas class="center" id="pie" style="width:230px; height:230px; max-width:230px; max-height:230px"></canvas>
-                    You are indifferent between ...
+                    <div style="margin-top: -1cm;">
+                        <canvas class="center" id="pie" style="width:230px; height:230px; max-width:230px; max-height:230px"></canvas>
+                        You are indifferent between ...
+                    </div>
                 {% else %}
-                    <table class="center" style="width:100%; font-size:30px; vertical-align: middle;" >
+                    <table class="center" style="width:100%; font-size:30px; vertical-align: middle; position: relative; top: -1.5cm" >
                         <tr style="border-bottom: 3px solid black;">
                             <td>Price</td>
                             <td>Chance</td>
@@ -116,9 +118,17 @@
         </tr>
         <tr style="height:300px">
             {% if variant == 'SP' %}
-                <td><canvas class="center" id="pie2" style="width:230px; height:230px; max-width:230px; max-height:230px"></canvas></td>
+                <td>
+                    <div style="margin-top: -2cm;">
+                        <canvas class="center" id="pie2" style="width:230px; height:230px; max-width:230px; max-height:230px"></canvas>
+                    </div>
+                </td>
             {% else %}
-                <td><canvas class="center" id="pie" style="width:230px; height:230px; max-width:230px; max-height:230px"></canvas></td>
+                <td>
+                    <div style="margin-top: -2cm;">
+                        <canvas class="center" id="pie" style="width:230px; height:230px; max-width:230px; max-height:230px"></canvas>
+                    </div>
+                </td>
             {% endif %}
 
         </tr>
