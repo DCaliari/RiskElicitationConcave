@@ -610,72 +610,45 @@ class CQ2(Page):
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
         return player.round_number == total_length + 1
 
-    # @staticmethod
-    # def error_message(player, values):
-    #     if values['Q8'] != '3':
-    #         player.Q_wrongs += 1
-    #         player.Q8_wrongs += 1
-    #         return 'Error in Q1'
-    #     if values['Q2_1'] != '0€':
-    #         player.Q_wrongs += 1
-    #         player.Q2_wrongs += 1
-    #         return 'Error in Q2'
-    #     if values['Q2_2'] != None:
-    #         player.Q_wrongs += 1
-    #         player.Q2_wrongs += 1
-    #         return 'Error in Q2'
-    #     if values['Q2_3'] != '10€':
-    #         player.Q_wrongs += 1
-    #         player.Q2_wrongs += 1
-    #         return 'Error in Q2'
-    #     if values['Q2_4'] != '20€':
-    #         player.Q_wrongs += 1
-    #         player.Q2_wrongs += 1
-    #         return 'Error in Q2'
-    #     if values['Q3'] != 'No':
-    #         player.Q_wrongs += 1
-    #         player.Q3_wrongs += 1
-    #         return 'Error in Q3'
-    #     if values['Q9'] != 'If Part 2 is selected for payment, one row across rounds, and its associated choice, is randomly selected and paid.':
-    #         player.Q_wrongs += 1
-    #         player.Q9_wrongs += 1
-    #         return 'Error in Q4'
-    #     if values['Q10'] != 'All rows below will automatically select the option on the right.':
-    #         player.Q_wrongs += 1
-    #         player.Q10_wrongs += 1
-    #         return 'Error in Q5'
     @staticmethod
     def error_message(player, values):
         errors = []
+        display_names = {
+            'Q8': 'Q1',
+            'Q2': 'Q2',
+            'Q3': 'Q3',
+            'Q9': 'Q4',
+            'Q10': 'Q5',
+        }
 
         if values['Q8'] != '3':
             player.Q8_wrongs += 1
-            errors.append('Q8')
+            errors.append(display_names['Q8'])
 
         if values['Q2_1'] != '0€':
             player.Q2_wrongs += 1
-            errors.append('Q2')
+            errors.append(display_names['Q2'])
         elif values['Q2_2'] != None:
             player.Q2_wrongs += 1
-            errors.append('Q2')
+            errors.append(display_names['Q2'])
         elif values['Q2_3'] != '10€':
             player.Q2_wrongs += 1
-            errors.append('Q2')
+            errors.append(display_names['Q2'])
         elif values['Q2_4'] != '20€':
             player.Q2_wrongs += 1
-            errors.append('Q2')
+            errors.append(display_names['Q2'])
 
         if values['Q3'] != 'No':
             player.Q3_wrongs += 1
-            errors.append('Q3')
+            errors.append(display_names['Q3'])
 
         if values['Q9'] != 'If Part 2 is selected for payment, one row across rounds, and its associated choice, is randomly selected and paid.':
             player.Q9_wrongs += 1
-            errors.append('Q9')
+            errors.append(display_names['Q9'])
 
         if values['Q10'] != 'All rows below will automatically select the option on the right.':
             player.Q10_wrongs += 1
-            errors.append('Q10')
+            errors.append(display_names['Q10'])
 
         if errors:
             player.Q_wrongs += 1
@@ -821,5 +794,26 @@ class WaitPageList(WaitPage):
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
         return player.round_number == total_length + 1
 
+class Part1Start(Page):
 
-page_sequence = [Start, WaitPageCQ, CQ, Q7, WaitPageChance, Chance, Part2, CQ2, WaitPageList, List, FQ, Payoff]
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
+class Part2Start(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        Z = player.session.config['Z']
+        L_select = player.session.config['L_select']
+
+        CA_length = (Z + 1) * (Z + 2) / 2
+        CB1_length = CA_length
+        CB2_length = CA_length
+        L_length = len(L_select)
+        D_length = 1
+        total_length = CA_length + CB1_length + CB2_length + L_length + D_length
+        return player.round_number == total_length + 1
+
+page_sequence = [Start, WaitPageCQ, CQ, Q7, WaitPageChance, Part1Start, Chance, Part2, CQ2, WaitPageList, Part2Start, List, FQ, Payoff]
