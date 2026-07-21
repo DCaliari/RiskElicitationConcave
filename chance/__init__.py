@@ -10,7 +10,7 @@ Chance
 
 class C(BaseConstants):
     NAME_IN_URL = 'chance'
-    PLAYERS_PER_GROUP = 20
+    PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 100
 
 
@@ -37,13 +37,13 @@ class Player(BasePlayer):
     real_round = models.IntegerField()
 
     Q1 = models.StringField(
-        label="Q1: How many rounds are there in Part 1?",
+        label="How many rounds are there in Part 1?",
         choices=['10', '20', '30'],
         widget=widgets.RadioSelect
     )
     Q2_1 = models.StringField(
         blank=True,
-        label="Q2: Which of the following outcomes are possible in each round? (Select all that apply.)",
+        label="Which of the following outcomes are possible in each round? (Select all that apply.)",
         choices=['0€'],
         widget=widgets.RadioSelect
     )
@@ -63,29 +63,34 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect
     )
     Q3 = models.StringField(
-        label="Q3: Do your decisions affect the earnings of other participants?",
+        label="Do your decisions affect the earnings of other participants?",
         choices=['Yes', 'No'],
         widget=widgets.RadioSelect
     )
     Q4 = models.StringField(
-        label="Q4: How is your payment determined?",
-        choices=['If Part 1 is selected for payment, you are paid the sum of all rounds', 'If Part 1 is selected for payment, one round is randomly selected and paid', 'You are paid a fixed amount independent of your choices'],
+        label="How is your payment determined?",
+        choices=['If Part 1 is selected for payment, you are paid the sum of all rounds',
+                 'If Part 1 is selected for payment, one round is randomly selected and paid',
+                 'You are paid a fixed amount independent of your choices'],
         widget=widgets.RadioSelect
     )
     Q5 = models.StringField(
         label="Q5: Suppose you choose a lottery that gives a 50% chance of 0€ and a 50% chance of 20€. What does this mean?",
-        choices=['You will receive 10€ for sure', 'One of the two outcomes will be randomly selected with equal probability', 'You can choose which outcome you prefer after the draw'],
+        choices=['You will receive 10€ for sure',
+                 'One of the two outcomes will be randomly selected with equal probability',
+                 'You can choose which outcome you prefer after the draw'],
         widget=widgets.RadioSelect
     )
     Q6 = models.StringField(
         label="Q6: As you move the slider to the right, which of the following happens?",
-        choices=['The probability of 10€ increases', 'The probability of 0€ increases', 'The probability of 20€ always increases'],
+        choices=['The probability of 10€ increases', 'The probability of 0€ increases',
+                 'The probability of 20€ always increases'],
         widget=widgets.RadioSelect
     )
-    Q7 = models.FloatField(label="Q7: Move the slider in the screen below so that the medium probability is between 20% and 30%.")
+    Q7 = models.FloatField(label="Move the slider in the screen below so that the medium probability is between 20% and 30%.")
 
     Q8 = models.StringField(
-        label="Q1: How many rounds are there in Part 2?",
+        label="How many rounds are there in Part 2?",
         choices=['1', '2', '3'],
         widget=widgets.RadioSelect
     )
@@ -97,7 +102,7 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect
     )
     Q10 = models.StringField(
-        label="Q5: If in one row you select the option on the right of the list:",
+        label="If in one row you select the option on the right of the list:",
         choices=['All rows below will automatically select the option on the right.',
                  'You can still choose the option on the left in one the rows below.'],
         widget=widgets.RadioSelect
@@ -140,6 +145,16 @@ class Player(BasePlayer):
 
 
     Q_wrongs = models.IntegerField(initial=0)
+    Q1_wrongs = models.IntegerField(initial=0)
+    Q2_wrongs = models.IntegerField(initial=0)
+    Q3_wrongs = models.IntegerField(initial=0)
+    Q4_wrongs = models.IntegerField(initial=0)
+    Q5_wrongs = models.IntegerField(initial=0)
+    Q6_wrongs = models.IntegerField(initial=0)
+    Q7_wrongs = models.IntegerField(initial=0)
+    Q8_wrongs = models.IntegerField(initial=0)
+    Q9_wrongs = models.IntegerField(initial=0)
+    Q10_wrongs = models.IntegerField(initial=0)
 
     response_time_start = models.FloatField()
     response_time_end = models.FloatField()
@@ -169,36 +184,84 @@ class CQ(Page):
     def is_displayed(player):
         return player.round_number == 1
 
+#    @staticmethod
+#    def error_message(player, values):
+#        if values['Q1'] != '20':
+#            player.Q_wrongs += 1
+#            player.Q1_wrongs += 1
+#           return 'Error in Q1'
+#         if values['Q2_1'] != '0€':
+#             player.Q_wrongs += 1
+#             player.Q2_wrongs += 1
+#             return 'Error in Q2'
+#         if values['Q2_2'] != None:
+#             player.Q_wrongs += 1
+#             player.Q2_wrongs += 1
+#             return 'Error in Q2'
+#         if values['Q2_3'] != '10€':
+#             player.Q_wrongs += 1
+#             player.Q2_wrongs += 1
+#             return 'Error in Q2'
+#         if values['Q2_4'] != '20€':
+#             player.Q_wrongs += 1
+#             player.Q2_wrongs += 1
+#             return 'Error in Q2'
+#         if values['Q3'] != 'No':
+#             player.Q_wrongs += 1
+#             player.Q3_wrongs += 1
+#             return 'Error in Q3'
+#         if values['Q4'] != 'If Part 1 is selected for payment, one round is randomly selected and paid':
+#             player.Q_wrongs += 1
+#             player.Q4_wrongs += 1
+#             return 'Error in Q4'
+#         if values['Q5'] != 'One of the two outcomes will be randomly selected with equal probability':
+#             player.Q_wrongs += 1
+#             player.Q5_wrongs += 1
+#             return 'Error in Q5'
+#         if values['Q6'] != 'The probability of 10€ increases':
+#             player.Q_wrongs += 1
+#             player.Q6_wrongs += 1
+#             return 'Error in Q6'
     @staticmethod
     def error_message(player, values):
-        if values['Q1'] != '20':
-            player.Q_wrongs += 1
-            return 'Error in Q1'
-        if values['Q2_1'] != '0€':
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q2_2'] != None:
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q2_3'] != '10€':
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q2_4'] != '20€':
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q3'] != 'No':
-            player.Q_wrongs += 1
-            return 'Error in Q3'
-        if values['Q4'] != 'If Part 1 is selected for payment, one round is randomly selected and paid':
-            player.Q_wrongs += 1
-            return 'Error in Q4'
-        if values['Q5'] != 'One of the two outcomes will be randomly selected with equal probability':
-            player.Q_wrongs += 1
-            return 'Error in Q5'
-        if values['Q6'] != 'The probability of 10€ increases':
-            player.Q_wrongs += 1
-            return 'Error in Q6'
+        errors = []
 
+        if values['Q1'] != '20':
+            player.Q1_wrongs += 1
+            errors.append('Q1')
+
+        if values['Q2_1'] != '0€':
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+        elif values['Q2_2'] != None:
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+        elif values['Q2_3'] != '10€':
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+        elif values['Q2_4'] != '20€':
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+
+        if values['Q3'] != 'No':
+            player.Q3_wrongs += 1
+            errors.append('Q3')
+
+        if values['Q4'] != 'If Part 1 is selected for payment, one round is randomly selected and paid':
+            player.Q4_wrongs += 1
+            errors.append('Q4')
+
+        if values['Q5'] != 'One of the two outcomes will be randomly selected with equal probability':
+            player.Q5_wrongs += 1
+            errors.append('Q5')
+
+        if values['Q6'] != 'The probability of 10€ increases':
+            player.Q6_wrongs += 1
+            errors.append('Q6')
+
+        if errors:
+            player.Q_wrongs += 1
+            return 'Error in ' + ', '.join(errors)
 
 class Chance(Page):
     form_model = 'player'
@@ -214,7 +277,7 @@ class Chance(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length + SP_length
 
         if player.round_number > CA_length + CB1_length + CB2_length + L_length + D_length:
@@ -239,7 +302,7 @@ class Chance(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         in_round = player.round_number
         s = 1
         c = player.session.config['c']
@@ -334,7 +397,7 @@ class Chance(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
         return player.round_number <= total_length
 
@@ -350,6 +413,8 @@ class List(Page):
 
     @staticmethod
     def vars_for_template(player):
+        if not ('random_bool_list' in player.participant.vars):
+            player.participant.vars['random_bool_list'] = random.randint(0, 1)
 
         Z = player.session.config['Z']
         L_select = player.session.config['L_select']
@@ -358,7 +423,7 @@ class List(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
 
         length = int(CA_length + CB1_length + CB2_length)
@@ -383,31 +448,45 @@ class List(Page):
         player.pL_star = pL_star
         player.pH_star = pH_star
         K = player.session.config['K']
-        if player.round_number == (total_length + 1):
+        if player.round_number > (total_length + 1):
+            if (player.round_number == (total_length + 2) and player.participant.vars['random_bool_list'] == 0) or (player.round_number == (total_length + 3) and player.participant.vars['random_bool_list'] == 1):
+                pLMH = []
+                pLMH_values = []
+                for i in range(0, 11, 1):
+                    pLMH.append([str(round(0.1 * i, 2) * 100) + "%", "0%", str(round(1 - 0.1 * i, 2) * 100) + "%"])
+                    pLMH_values.append([round(0.1 * i, 2) * 100, 0, round(1 - 0.1 * i, 2) * 100])
+            else:
+                pLMH = []
+                pLMH_values = []
+                for i in range(0, 11, 1):
+                    pH = (0.1 * ((1 - 0.1 * i) - pH_star/100) + (pH_star/100 * pM_star/100)) / (pM_star/100)
+                    pM = pM_star/100 - 0.1
+                    pL = 1 - pM - pH
+                    pLMH.append([str(round(pL * 100, 1)) + "%", str(round(pM * 100, 1)) + "%", str(round(pH * 100, 1)) + "%"])
+                    pLMH_values.append([round(pL * 100, 1), round(pM * 100, 1), round(pH * 100, 1)])
+            if player.round_number == (total_length + 2):
+                player.participant.vars['pLMH_2'] = pLMH_values
+            else:
+                player.participant.vars['pLMH_3'] = pLMH_values
+        else:
             pLMH = []
             pLMH_values = []
             for i in range(0, 11, 1):
                 pLMH.append([str(round(0.1 * i, 2) * 100) + "%", "0%", str(round(1 - 0.1 * i, 2) * 100) + "%"])
                 pLMH_values.append([round(0.1 * i, 2) * 100, 0, round(1 - 0.1 * i, 2) * 100])
             player.participant.vars['pLMH_1'] = pLMH_values
-        else:
-            pLMH = []
-            pLMH_values = []
-            for i in range(0, 11, 1):
-                pH = (1 - (0.1 * i)) * (1 - pM_star / 100 - K)
-                pL = (0.1 * i) * (1 - pM_star / 100 - K)
-                pM = 1 - pH - pL
-                pLMH.append([str(round(pL * 100, 1)) + "%", str(round(pM * 100, 1)) + "%", str(round(pH * 100, 1)) + "%"])
-                pLMH_values.append([round(pL * 100, 1), round(pM * 100, 1), round(pH * 100, 1)])
-            player.participant.vars['pLMH_2'] = pLMH_values
+            pM_star = 100
+            pH_star = 0
+            pL_star = 0
+
         player.pLMH = str(pLMH_values)
 
         player.response_time_start = time.time()
 
         return dict(
-            pM_star=str(player.participant.vars['pM_star'])+"%",
-            pH_star=str(player.participant.vars['pH_star'])+"%",
-            pL_star=str(player.participant.vars['pL_star'])+"%",
+            pM_star=str(pM_star)+"%",
+            pH_star=str(pH_star)+"%",
+            pL_star=str(pL_star)+"%",
             pLMH=pLMH,
         )
 
@@ -421,9 +500,9 @@ class List(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
-        return (player.round_number > total_length) and (player.round_number <= (total_length + 2))
+        return (player.round_number > total_length) and (player.round_number <= (total_length + 3))
 
     @staticmethod
     def before_next_page(player, timeout_happened):
@@ -450,7 +529,7 @@ class Q7(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length + SP_length
 
         return dict(
@@ -467,7 +546,7 @@ class Q7(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         in_round = player.round_number
         s = 1
 
@@ -497,6 +576,7 @@ class Q7(Page):
     def error_message(player, values):
         if not (20 < values['Q7'] < 30):
             player.Q_wrongs += 1
+            player.Q7_wrongs += 1
             return 'You made a mistake'
 
 
@@ -523,37 +603,80 @@ class CQ2(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
         return player.round_number == total_length + 1
 
+    # @staticmethod
+    # def error_message(player, values):
+    #     if values['Q8'] != '3':
+    #         player.Q_wrongs += 1
+    #         player.Q8_wrongs += 1
+    #         return 'Error in Q1'
+    #     if values['Q2_1'] != '0€':
+    #         player.Q_wrongs += 1
+    #         player.Q2_wrongs += 1
+    #         return 'Error in Q2'
+    #     if values['Q2_2'] != None:
+    #         player.Q_wrongs += 1
+    #         player.Q2_wrongs += 1
+    #         return 'Error in Q2'
+    #     if values['Q2_3'] != '10€':
+    #         player.Q_wrongs += 1
+    #         player.Q2_wrongs += 1
+    #         return 'Error in Q2'
+    #     if values['Q2_4'] != '20€':
+    #         player.Q_wrongs += 1
+    #         player.Q2_wrongs += 1
+    #         return 'Error in Q2'
+    #     if values['Q3'] != 'No':
+    #         player.Q_wrongs += 1
+    #         player.Q3_wrongs += 1
+    #         return 'Error in Q3'
+    #     if values['Q9'] != 'If Part 2 is selected for payment, one row across rounds, and its associated choice, is randomly selected and paid.':
+    #         player.Q_wrongs += 1
+    #         player.Q9_wrongs += 1
+    #         return 'Error in Q4'
+    #     if values['Q10'] != 'All rows below will automatically select the option on the right.':
+    #         player.Q_wrongs += 1
+    #         player.Q10_wrongs += 1
+    #         return 'Error in Q5'
     @staticmethod
     def error_message(player, values):
-        if values['Q8'] != '2':
-            player.Q_wrongs += 1
-            return 'Error in Q1'
-        if values['Q2_1'] != '0€':
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q2_2'] != None:
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q2_3'] != '10€':
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q2_4'] != '20€':
-            player.Q_wrongs += 1
-            return 'Error in Q2'
-        if values['Q3'] != 'No':
-            player.Q_wrongs += 1
-            return 'Error in Q3'
-        if values['Q9'] != 'If Part 2 is selected for payment, one row across rounds, and its associated choice, is randomly selected and paid.':
-            player.Q_wrongs += 1
-            return 'Error in Q4'
-        if values['Q10'] != 'All rows below will automatically select the option on the right.':
-            player.Q_wrongs += 1
-            return 'Error in Q5'
+        errors = []
 
+        if values['Q8'] != '3':
+            player.Q8_wrongs += 1
+            errors.append('Q8')
+
+        if values['Q2_1'] != '0€':
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+        elif values['Q2_2'] != None:
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+        elif values['Q2_3'] != '10€':
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+        elif values['Q2_4'] != '20€':
+            player.Q2_wrongs += 1
+            errors.append('Q2')
+
+        if values['Q3'] != 'No':
+            player.Q3_wrongs += 1
+            errors.append('Q3')
+
+        if values['Q9'] != 'If Part 2 is selected for payment, one row across rounds, and its associated choice, is randomly selected and paid.':
+            player.Q9_wrongs += 1
+            errors.append('Q9')
+
+        if values['Q10'] != 'All rows below will automatically select the option on the right.':
+            player.Q10_wrongs += 1
+            errors.append('Q10')
+
+        if errors:
+            player.Q_wrongs += 1
+            return 'Error in ' + ', '.join(errors)
 
 class FQ(Page):
     form_model = 'player'
@@ -573,32 +696,41 @@ class FQ(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length + SP_length
 
         selected_round = random.randint(1, total_length)
         player.selected_round = selected_round
 
-        if selected_round <= total_length - 2:
+        if selected_round <= total_length - SP_length:
             pL = player.in_round(selected_round).value_L
             pM = player.in_round(selected_round).value_M
             pH = player.in_round(selected_round).value_H
         else:
             selected_row = random.randint(1, 11)
-            if selected_round == total_length - 1:
+            if selected_round == total_length - 2:
                 if selected_row <= player.in_round(selected_round).List_left:
                     pL = player.participant.vars['pLMH_1'][selected_row - 1][0]
                     pM = player.participant.vars['pLMH_1'][selected_row - 1][1]
                     pH = player.participant.vars['pLMH_1'][selected_row - 1][2]
+                else:
+                    pL = 0
+                    pM = 100
+                    pH = 0
+            elif selected_round == total_length - 1:
+                if selected_row <= player.in_round(selected_round).List_left:
+                    pL = player.participant.vars['pLMH_2'][selected_row - 1][0]
+                    pM = player.participant.vars['pLMH_2'][selected_row - 1][1]
+                    pH = player.participant.vars['pLMH_2'][selected_row - 1][2]
                 else:
                     pL = player.participant.vars['pL_star']
                     pM = player.participant.vars['pM_star']
                     pH = player.participant.vars['pH_star']
             else:
                 if selected_row <= player.in_round(selected_round).List_left:
-                    pL = player.participant.vars['pLMH_2'][selected_row - 1][0]
-                    pM = player.participant.vars['pLMH_2'][selected_row - 1][1]
-                    pH = player.participant.vars['pLMH_2'][selected_row - 1][2]
+                    pL = player.participant.vars['pLMH_3'][selected_row - 1][0]
+                    pM = player.participant.vars['pLMH_3'][selected_row - 1][1]
+                    pH = player.participant.vars['pLMH_3'][selected_row - 1][2]
                 else:
                     pL = player.participant.vars['pL_star']
                     pM = player.participant.vars['pM_star']
@@ -653,7 +785,6 @@ class WaitPageChance(WaitPage):
         return player.round_number == 1
 
 
-# class WaitPageCQ2(WaitPage):
 class Part2(Page):
 
     @staticmethod
@@ -666,7 +797,7 @@ class Part2(Page):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
         return player.round_number == total_length + 1
 
@@ -683,10 +814,9 @@ class WaitPageList(WaitPage):
         CB2_length = CA_length
         L_length = len(L_select)
         D_length = 1
-        SP_length = 2
+        SP_length = 3
         total_length = CA_length + CB1_length + CB2_length + L_length + D_length
         return player.round_number == total_length + 1
 
 
 page_sequence = [Start, WaitPageCQ, CQ, Q7, WaitPageChance, Chance, Part2, CQ2, WaitPageList, List, FQ, Payoff]
-# page_sequence = [Start, WaitPageCQ, CQ, Q7, WaitPageChance, Chance, WaitPageCQ2, CQ2, WaitPageList, List, FQ, Payoff]
