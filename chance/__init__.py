@@ -184,44 +184,6 @@ class CQ(Page):
     def is_displayed(player):
         return player.round_number == 1
 
-#    @staticmethod
-#    def error_message(player, values):
-#        if values['Q1'] != '20':
-#            player.Q_wrongs += 1
-#            player.Q1_wrongs += 1
-#           return 'Error in Q1'
-#         if values['Q2_1'] != '0€':
-#             player.Q_wrongs += 1
-#             player.Q2_wrongs += 1
-#             return 'Error in Q2'
-#         if values['Q2_2'] != None:
-#             player.Q_wrongs += 1
-#             player.Q2_wrongs += 1
-#             return 'Error in Q2'
-#         if values['Q2_3'] != '10€':
-#             player.Q_wrongs += 1
-#             player.Q2_wrongs += 1
-#             return 'Error in Q2'
-#         if values['Q2_4'] != '20€':
-#             player.Q_wrongs += 1
-#             player.Q2_wrongs += 1
-#             return 'Error in Q2'
-#         if values['Q3'] != 'No':
-#             player.Q_wrongs += 1
-#             player.Q3_wrongs += 1
-#             return 'Error in Q3'
-#         if values['Q4'] != 'If Part 1 is selected for payment, one round is randomly selected and paid':
-#             player.Q_wrongs += 1
-#             player.Q4_wrongs += 1
-#             return 'Error in Q4'
-#         if values['Q5'] != 'One of the two outcomes will be randomly selected with equal probability':
-#             player.Q_wrongs += 1
-#             player.Q5_wrongs += 1
-#             return 'Error in Q5'
-#         if values['Q6'] != 'The probability of 10€ increases':
-#             player.Q_wrongs += 1
-#             player.Q6_wrongs += 1
-#             return 'Error in Q6'
     @staticmethod
     def error_message(player, values):
         errors = []
@@ -590,6 +552,10 @@ class Start(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.label = str(player.cubicle)
 
 
 class CQ2(Page):
