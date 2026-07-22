@@ -40,7 +40,7 @@ ROOMS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
+    real_world_currency_per_point=1.00, participation_fee=7.00, doc=""
 )
 
 PARTICIPANT_FIELDS = ['factor_numbers', 'pM_star', 'pL_star', 'pH_star', 'pLMH_1', 'pHML_2', 'pHML_3', 'random_bool_list']
