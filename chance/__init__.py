@@ -725,6 +725,7 @@ class FQ(Page):
         else:
             player.payout = player.session.config['out_H']
 
+        player.payoff = player.payout
 
 class Payoff(Page):
     form_model = 'player'
