@@ -4,18 +4,39 @@
             margin-left: auto;
             margin-right: auto;
         }
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
         td {
-            width: 150px;
+            width: 110px;
+            text-align: center;
+            padding: 4px 8px;
+        }
+        td:nth-child(4) {
+            border-left: 1px solid #ccc;
+            background-color: rgba(24, 95, 165, 0.12);   /* transparent blue */
+        }
+        td:nth-child(5) {
+            border-right: 1px solid #ccc;
+            border-left: 2px solid #888;
+            background-color: rgba(163, 45, 45, 0.12);   /* transparent red */
         }
     </style>
 
     <table class="center" style="font-size:30px;">
+        <tr style="text-align:center; font-weight:bold;">
+            <td colspan="3" style="color:#185FA5; background:none; border:none;">Option A</td>
+            <td class="choiceA" style="border:none !important;"></td>
+            <td class="choiceB" style="border:none !important;"></td>
+            <td colspan="3" style="color:#A32D2D; background:none; border:none;">Option B</td>
+        </tr>
         <tr style="border-bottom: 2px solid #888;">
             <td><small>Chance: L=0</small></td>
             <td><small>Chance: M=10</small></td>
             <td><small>Chance: H=20</small></td>
-            <td>-</td>
-            <td>-</td>
+            <td><small style="color:#185FA5;">Option A</small></td>
+            <td><small style="color:#A32D2D;">Option B</small></td>
             <td><small>Chance: L=0</small></td>
             <td><small>Chance: M=10</small></td>
             <td><small>Chance: H=20</small></td>
